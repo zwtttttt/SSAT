@@ -76,7 +76,7 @@ class MakeupGAN(nn.Module):
         self.z_cycle_makeup = self.gen(self.z_removal_c, self.z_transfer_a_warp)
 
     def resume(self, model_dir, train=True):
-        checkpoint = torch.load(model_dir, map_location=torch.device('cpu'))
+        checkpoint = torch.load(model_dir) if self.opts.gpu >= 0 else torch.load(model_dir, map_location=torch.device('cpu'))
         # weight
         self.enc_content.load_state_dict(checkpoint['enc_c'])
         self.enc_makeup.load_state_dict(checkpoint['enc_a'])
