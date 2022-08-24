@@ -45,7 +45,7 @@ class MakeupOptions():
                                  help='specified the dir of saved models for resume the training')
         self.parser.add_argument('--num_residule_block', type=int, default=4, help='num_residule_block')
         self.parser.add_argument('--lr', type=float, default=0.0002, help='lr')
-        self.parser.add_argument('--gpu', type=int, default=0, help='gpu: e.g. 0 ,use -1 for CPU')
+        self.parser.add_argument('--gpu', type=int, default=-1, help='gpu: e.g. 0 ,use -1 for CPU')
 
     def parse(self):
         self.opt = self.parser.parse_args()

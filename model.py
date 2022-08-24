@@ -24,12 +24,12 @@ class MakeupGAN(nn.Module):
         self.semantic_dim = opts.semantic_dim
 
         # encoders
-        self.enc_content = init_net(networks.E_content(opts.input_dim), opts.gpu, init_type='normal', gain=0.02)
-        self.enc_makeup = init_net(networks.E_makeup(opts.input_dim), opts.gpu, init_type='normal', gain=0.02)
-        self.enc_semantic = init_net(networks.E_semantic(opts.semantic_dim), opts.gpu, init_type='normal', gain=0.02)
-        self.transformer = init_net(networks.Transformer(), opts.gpu, init_type='normal', gain=0.02)
+        self.enc_content = init_net(networks.E_content(opts.input_dim), self.gpu, init_type='normal', gain=0.02)
+        self.enc_makeup = init_net(networks.E_makeup(opts.input_dim), self.gpu, init_type='normal', gain=0.02)
+        self.enc_semantic = init_net(networks.E_semantic(opts.semantic_dim), self.gpu, init_type='normal', gain=0.02)
+        self.transformer = init_net(networks.Transformer(), self.gpu, init_type='normal', gain=0.02)
         # generator
-        self.gen = init_net(networks.Decoder(opts.output_dim), opts.gpu, init_type='normal', gain=0.02)
+        self.gen = init_net(networks.Decoder(opts.output_dim), self.gpu, init_type='normal', gain=0.02)
 
 
     def forward(self):
@@ -76,7 +76,7 @@ class MakeupGAN(nn.Module):
         self.z_cycle_makeup = self.gen(self.z_removal_c, self.z_transfer_a_warp)
 
     def resume(self, model_dir, train=True):
-        checkpoint = torch.load(model_dir)
+        checkpoint = torch.load(model_dir, map_location=torch.device('cpu'))
         # weight
         self.enc_content.load_state_dict(checkpoint['enc_c'])
         self.enc_makeup.load_state_dict(checkpoint['enc_a'])
